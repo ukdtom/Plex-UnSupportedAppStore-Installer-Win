@@ -51,6 +51,6 @@
 __history/
 *.~*
 
-bin/Debug/Win32/*
+bin/Debug/
 
 
