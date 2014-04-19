@@ -51,5 +51,6 @@
 __history/
 *.~*
 
+/Debug/*
 
-Debug/
+
