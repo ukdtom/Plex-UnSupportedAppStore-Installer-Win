@@ -49,6 +49,10 @@ object Form1: TForm1
           'This application is provided as is, meaning :" Use at your own r' +
           'isk "'
         ''
+        
+          'This application MUST be executed on the windows box that is run' +
+          'ning your Plex Media Server.'
+        ''
         'If proceding, you ackknowlegde to this.'
         ''
         'To continue, simply press the button named "GO" below')
