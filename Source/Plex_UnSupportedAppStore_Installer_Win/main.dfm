@@ -1,6 +1,6 @@
 object Form1: TForm1
-  Left = 0
-  Top = 0
+  Left = 137
+  Top = 309
   Caption = 'Form1'
   ClientHeight = 600
   ClientWidth = 800
@@ -24,10 +24,6 @@ object Form1: TForm1
     Height = 540
     Align = alClient
     TabOrder = 0
-    ExplicitLeft = 176
-    ExplicitTop = 48
-    ExplicitWidth = 393
-    ExplicitHeight = 405
     object rEdtMain: TRichEdit
       Left = 1
       Top = 1
@@ -58,11 +54,8 @@ object Form1: TForm1
         'To continue, simply press the button named "GO" below')
       ParentFont = False
       ReadOnly = True
+      ScrollBars = ssBoth
       TabOrder = 0
-      ExplicitLeft = 576
-      ExplicitTop = 296
-      ExplicitWidth = 185
-      ExplicitHeight = 89
     end
   end
   object StatusBar1: TStatusBar
@@ -86,11 +79,8 @@ object Form1: TForm1
     Height = 41
     Align = alBottom
     TabOrder = 2
-    ExplicitLeft = 448
-    ExplicitTop = 496
-    ExplicitWidth = 185
     object btnExit: TButton
-      Left = 672
+      Left = 704
       Top = 10
       Width = 75
       Height = 25
@@ -100,12 +90,13 @@ object Form1: TForm1
       OnClick = btnExitClick
     end
     object btnGo: TButton
-      Left = 552
-      Top = 8
+      Left = 592
+      Top = 10
       Width = 75
       Height = 25
       Caption = '&GO'
       TabOrder = 1
+      OnClick = btnGoClick
     end
   end
   object MainMenu1: TMainMenu
@@ -134,5 +125,10 @@ object Form1: TForm1
   object XPManifest1: TXPManifest
     Left = 56
     Top = 544
+  end
+  object AbUnZipper1: TAbUnZipper
+    ExtractOptions = [eoCreateDirs, eoRestorePath]
+    Left = 560
+    Top = 296
   end
 end
