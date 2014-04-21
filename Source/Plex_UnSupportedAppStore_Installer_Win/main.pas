@@ -66,12 +66,23 @@ begin
   // Check for PlugIn Dir
   if self.findPlugInDir(myPlugInsDir) Then
   begin
-    getFromGitHub;
-    self.extractZip(myPlugInsDir);
-    self.cleanUp(myPlugInsDir);
+    if getFromGitHub then
+    begin
+      self.extractZip(myPlugInsDir);
+      self.cleanUp(myPlugInsDir);
+    end
+    else
+    begin
+      exitCode := 1;
+      exit;
+    end;
   end
   else
+  begin
     ShowMessage('Not Found');
+    exitCode := 1;
+    exit;
+  end;
 end;
 
 procedure TForm1.EnableDebug1Click(Sender: TObject);
@@ -116,6 +127,7 @@ begin
   // Let's start by looking at the default directory below the %LOCALAPPDATA%'
   myPlugInsDir := GetEnvironmentVariable(pWideChar('LOCALAPPDATA')) + '\Plex Media Server\Plug-ins';
   result := DirectoryExists(myPlugInsDir);
+  if EnableDebug1.Checked then DebugPrint('PlugIn Dir was: ' + myPlugInsDir);
   if result then
   begin
     self.rEdtMain.Lines.Append('');
@@ -124,12 +136,15 @@ begin
     self.StatusBar1.Panels[1].Text := 'Plex Media Server PlugIns directory located';
     self.StatusBar1.Refresh;
     self.rEdtMain.Refresh;
+    result := true;
   end
   else
   begin
     self.rEdtMain.Lines.Append('');
     self.rEdtMain.Lines.Append('ERROR.....Failed to locate the PlugIns directory');
-      self.rEdtMain.Refresh;
+    if EnableDebug1.Checked then DebugPrint('ERROR.....Failed to locate the PlugIns directory');
+    self.rEdtMain.Refresh;
+    result := false;
   end;
   screen.Cursor := crDefault;
 end;
@@ -138,6 +153,7 @@ function TForm1.getFromGitHub : boolean;
 // Fetch the bundle directly from GitHub
 var
   targetDir : String;
+  dwnRes : Integer;
 begin
   screen.Cursor := crHourglass;
   self.rEdtMain.Lines.Append('');
@@ -145,23 +161,36 @@ begin
   self.rEdtMain.Refresh;
   // Let's start by creating a directory in users temp dir to store the download in
   targetDir := GetEnvironmentVariable(pWideChar('TEMP')) + '\PlexTmp';
-  ForceDirectories(targetDir);
-  self.rEdtMain.Lines.Append('');
-  self.rEdtMain.Lines.Append('Downloading from GitHub');
-  self.StatusBar1.Panels[1].Text := 'Downloading';
-  self.StatusBar1.Refresh;
-  self.rEdtMain.Refresh;
-  URLDownloadToFile(nil,
-                  urlGitHub,
-                  PChar(targetDir + '\bundle.zip'),
-                  0,
-                  nil);
-  self.rEdtMain.Lines.Append('');
-  self.rEdtMain.Lines.Append('Download completed');
-  self.StatusBar1.Panels[1].Text := 'Waiting for my Master to click a button';
-  self.StatusBar1.Refresh;
-  self.rEdtMain.Refresh;
-  screen.Cursor := crDefault;
+  if ForceDirectories(targetDir) Then
+  begin
+    if EnableDebug1.Checked then DebugPrint('Created tmp dir as ' + targetDir);
+    self.rEdtMain.Lines.Append('');
+    self.rEdtMain.Lines.Append('Downloading from GitHub');
+    self.StatusBar1.Panels[1].Text := 'Downloading';
+    self.StatusBar1.Refresh;
+    self.rEdtMain.Refresh;
+    dwnRes := URLDownloadToFile(nil,
+                    urlGitHub,
+                    PChar(targetDir + '\bundle.zip'),
+                    0,
+                    nil);
+    if dwnRes = 0 then
+    begin
+      self.rEdtMain.Lines.Append('');
+      self.rEdtMain.Lines.Append('Download completed');
+      result := true;
+    end
+    else
+    begin
+      self.rEdtMain.Lines.Append('');
+      self.rEdtMain.Lines.Append('ERROR Downloading.....Please try again');
+      result := false
+    end;
+    self.StatusBar1.Panels[1].Text := 'Waiting for my Master to click a button';
+    self.StatusBar1.Refresh;
+    self.rEdtMain.Refresh;
+    screen.Cursor := crDefault;
+  end;
 end;
 
 function TForm1.extractZip(myPlugInsDir : String) : Boolean;
@@ -213,7 +242,6 @@ begin
   self.StatusBar1.Refresh;
   self.rEdtMain.Refresh;
   screen.Cursor := crDefault;
-
 end;
 
 end.

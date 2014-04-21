@@ -77,11 +77,11 @@
 				<Delphi.Personality>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
-						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
+						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">0</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">1</VersionInfo>
-						<VersionInfo Name="Build">0</VersionInfo>
+						<VersionInfo Name="Build">2</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -93,7 +93,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">Plex Community</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Windows Installer for the UnSupportedAppStore</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">0.0.1.0</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">0.0.1.2</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
