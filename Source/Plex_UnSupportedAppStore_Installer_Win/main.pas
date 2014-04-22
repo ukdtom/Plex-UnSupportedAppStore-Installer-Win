@@ -35,6 +35,8 @@ type
     function getFromGitHub : boolean;
     function extractZip(myPlugInsDir : String) : Boolean;
     procedure cleanUp(myPlugInsDir : String);
+    function allreadyInstalled(myPlugInsDir : String) : boolean;
+    procedure DeleteDirectory(const Name: string);
   public
     { Public declarations }
   end;
@@ -62,10 +64,28 @@ end;
 procedure TForm1.btnGoClick(Sender: TObject);
 var
   myPlugInsDir : String;
+  buttonSelected : Integer;
+  sAlreadyThere : String;
 begin
   // Check for PlugIn Dir
   if self.findPlugInDir(myPlugInsDir) Then
   begin
+    if self.allreadyInstalled(myPlugInsDir) then
+    begin
+      // Already installed, so what now?
+      sAlreadyThere := 'UnSupported AppStore seems to be installed already.';
+      sAlreadyThere := sAlreadyThere + Chr(13) + 'Do you want to reinstall it?';
+      if mrCancel = MessageDlg(sAlreadyThere, mtConfirmation, mbOKCancel, 0) Then
+      begin
+        exitCode := 2;
+        exit;
+      end
+      else
+      begin
+        // Remove the old one
+        self.DeleteDirectory(myPlugInsDir + '\UnSupportedAppstore.bundle');
+      end;
+    end;
     if getFromGitHub then
     begin
       self.extractZip(myPlugInsDir);
@@ -100,6 +120,12 @@ begin
   End
   else
     Action := caNone;
+end;
+
+function TForm1.allreadyInstalled(myPlugInsDir : String) : boolean;
+// Returns true if AppStore is already there
+begin
+  result := DirectoryExists(myPlugInsDir + '\UnSupportedAppstore.bundle');
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);
@@ -225,11 +251,7 @@ begin
   self.StatusBar1.Refresh;
   self.rEdtMain.Refresh;
   // Remove the Temp directory again
-  myTmpDir := GetEnvironmentVariable(pWideChar('TEMP')) + '\PlexTmp';
-  // Remove downloaded file first
-  DeleteFile(myTmpDir + '\bundle.zip');
-  // Now for the Directory itself
-  rmDir(myTmpDir);
+  self.DeleteDirectory(GetEnvironmentVariable(pWideChar('TEMP')) + '\PlexTmp');
   // All we need now, is to rename the extracted zip directory
   RenameFile(myPlugInsDir + '\UnSupportedAppstore.bundle-master', myPlugInsDir + '\UnSupportedAppstore.bundle');
   self.rEdtMain.Lines.Append('');
@@ -242,6 +264,28 @@ begin
   self.StatusBar1.Refresh;
   self.rEdtMain.Refresh;
   screen.Cursor := crDefault;
+end;
+
+procedure TForm1.DeleteDirectory(const Name: string);
+var
+  F: TSearchRec;
+begin
+  if FindFirst(Name + '\*', faAnyFile, F) = 0 then begin
+    try
+      repeat
+        if (F.Attr and faDirectory <> 0) then begin
+          if (F.Name <> '.') and (F.Name <> '..') then begin
+            DeleteDirectory(Name + '\' + F.Name);
+          end;
+        end else begin
+          DeleteFile(Name + '\' + F.Name);
+        end;
+      until FindNext(F) <> 0;
+      RemoveDir(Name);
+    finally
+      FindClose(F);
+    end;
+  end;
 end;
 
 end.

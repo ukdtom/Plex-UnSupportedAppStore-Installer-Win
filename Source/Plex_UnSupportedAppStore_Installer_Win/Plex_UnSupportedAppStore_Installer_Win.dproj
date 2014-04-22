@@ -36,15 +36,17 @@
 			<DCC_K>false</DCC_K>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
+			<DCC_DcuOutput>..\output\$(Config)\$(Platform)\dcu</DCC_DcuOutput>
 			<DCC_Optimize>false</DCC_Optimize>
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
 			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
-			<DCC_ExeOutput>..\..\bin\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_ExeOutput>..\output\$(Config)\$(Platform)</DCC_ExeOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
+			<DCC_DcuOutput>..\output\$(Config)\$(Platform)\dcu</DCC_DcuOutput>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
-			<DCC_ExeOutput>..\..\bin\$(Config)\$(Platform)</DCC_ExeOutput>
+			<DCC_ExeOutput>..\output\$(Config)\$(Platform)</DCC_ExeOutput>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
@@ -81,7 +83,7 @@
 						<VersionInfo Name="MajorVer">0</VersionInfo>
 						<VersionInfo Name="MinorVer">0</VersionInfo>
 						<VersionInfo Name="Release">1</VersionInfo>
-						<VersionInfo Name="Build">2</VersionInfo>
+						<VersionInfo Name="Build">4</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
 						<VersionInfo Name="PreRelease">False</VersionInfo>
 						<VersionInfo Name="Special">False</VersionInfo>
@@ -93,7 +95,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName">Plex Community</VersionInfoKeys>
 						<VersionInfoKeys Name="FileDescription">Windows Installer for the UnSupportedAppStore</VersionInfoKeys>
-						<VersionInfoKeys Name="FileVersion">0.0.1.2</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">0.0.1.4</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>

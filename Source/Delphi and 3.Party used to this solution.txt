@@ -1,0 +1,15 @@
+This solution was made using Delphi XE
+
+If you wish to compile this solution your self, yuo'll need a 3.Party plugIn to Delphi
+
+http://sourceforge.net/projects/tpabbrevia/
+
+Above takes care uf the decompressing
+
+Also, the Resource directory contains an icon file, that I shamlessly stole from the UnsupportedAppstore 
+png file, and converted to suite my needs.
+
+Mike....Hope the flogging for that will be slim ;-)
+
+
+/dane22

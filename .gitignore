@@ -51,8 +51,12 @@
 __history/
 *.~*
 
-bin/Debug/
 
+
+#Ignore the output directory, since we need to create both an md5sum file, as well as a self-extracting exe file in the bin directory
 output/
+**/Debug
+**/Release
+
 
 
