@@ -98,7 +98,7 @@ object Form1: TForm1
       Top = 10
       Width = 75
       Height = 25
-      Caption = '&GO'
+      Caption = '&Go'
       TabOrder = 1
       OnClick = btnGoClick
     end

@@ -1,0 +1,4 @@
+//
+// File Checksum Integrity Verifier version 2.05.
+//
+6f2733e9c2befde506c501c99139c135 c:\delphi\plex-unsupportedappstore-installer-win\source\output\release\win32\plex_unsupportedappstore_installer_win.exe
