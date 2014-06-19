@@ -48,7 +48,7 @@ var
 implementation
 
 
-uses debug, URLMon;
+uses debug, URLMon, registry;
 
 Const
   urlGitHub = 'https://github.com/mikedm139/UnSupportedAppstore.bundle/archive/master.zip';
@@ -142,6 +142,8 @@ end;
 function TForm1.findPlugInDir(var myPlugInsDir : String) : Boolean;
 {This function will populate the global var named PlexPlugInDir with the location
  of the PlugIn Directory, and if success, return true, else false}
+var
+  myReg : TRegistry;
 begin
   screen.Cursor := crHourglass;
   self.rEdtMain.Lines.Append('');
@@ -150,8 +152,19 @@ begin
   self.StatusBar1.Refresh;
   self.rEdtMain.Refresh;
   if EnableDebug1.Checked then DebugPrint('Starting to locate the plug-in directory');
-  // Let's start by looking at the default directory below the %LOCALAPPDATA%'
-  myPlugInsDir := GetEnvironmentVariable(pWideChar('LOCALAPPDATA')) + '\Plex Media Server\Plug-ins';
+  // Start by looking in the registry
+  myReg := TRegistry.Create;
+  myReg.RootKey:=HKEY_CURRENT_USER;
+  if myReg.OpenKeyReadOnly('\Software\Plex, Inc.\Plex Media Server') Then
+  begin
+    if myReg.ValueExists('LocalAppDataPath') then
+      myPlugInsDir := myReg.ReadString('LocalAppDataPath') + '\Plex Media Server\Plug-ins'
+    else
+      // Not found in registry, so go for the default directory below the %LOCALAPPDATA%'
+      myPlugInsDir := GetEnvironmentVariable(pWideChar('LOCALAPPDATA')) + '\Plex Media Server\Plug-ins';
+  end;
+  myReg.CloseKey;
+  myReg.Free;
   result := DirectoryExists(myPlugInsDir);
   if EnableDebug1.Checked then DebugPrint('PlugIn Dir was: ' + myPlugInsDir);
   if result then
@@ -233,7 +246,6 @@ begin
   self.AbUnZipper1.ExtractFiles( '*.*' );
   self.AbUnZipper1.CloseArchive;
   self.rEdtMain.Lines.Append('');
-  self.rEdtMain.Lines.Append('Unsupported AppStore has been installed');
   self.StatusBar1.Panels[1].Text := 'Extracted AppStore';
   self.StatusBar1.Refresh;
   self.rEdtMain.Refresh;
@@ -256,6 +268,7 @@ begin
   RenameFile(myPlugInsDir + '\UnSupportedAppstore.bundle-master', myPlugInsDir + '\UnSupportedAppstore.bundle');
   self.rEdtMain.Lines.Append('');
   self.rEdtMain.Lines.Append('UnSupported AppStore has been installed');
+  self.rEdtMain.Lines.Append('You should restart the Plex Media Server');
   self.rEdtMain.Lines.Append('If already running a browser against Plex Media Server, you');
   self.rEdtMain.Lines.Append('might have to refresh your browser');
   self.rEdtMain.Lines.Append('');
